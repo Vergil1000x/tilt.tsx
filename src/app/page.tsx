@@ -1,101 +1,186 @@
+"use client";
+import Tilt from "@/components/tilt";
 import Image from "next/image";
+import FallingSakura from "@/components/sakura";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Quicksand, Dancing_Script } from "next/font/google";
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+// Define the props interface for FooterLink
+interface FooterLinkProps {
+  href: string;
+  text: string;
+  isOrangeTheme: boolean;
+}
+
+const FooterLink: React.FC<FooterLinkProps> = ({
+  href,
+  text,
+  isOrangeTheme,
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={`font-medium transition-colors duration-100 ${
+      isOrangeTheme
+        ? "text-slate-100 hover:text-white"
+        : "text-pink-600 hover:text-pink-700"
+    }`}
+  >
+    {text}
+  </a>
+);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [isOrangeTheme, setIsOrangeTheme] = useState(false);
+  const [sakuraSpeed, setSakuraSpeed] = useState(0.5);
+  const [imageKey, setImageKey] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  const handleThemeSwitch = () => {
+    setIsOrangeTheme((prev) => !prev);
+    setImageKey((prev) => prev + 1);
+  };
+
+  const handleTiltHover = () => {
+    setSakuraSpeed(0.01);
+  };
+
+  const handleTiltLeave = () => {
+    setSakuraSpeed(0.5);
+  };
+
+  const imageSrc = isOrangeTheme ? "/n.jpg" : "/h.jpg";
+  const textMessage = isOrangeTheme ? "Dattebayo..." : "Have a great day!";
+
+  return (
+    <motion.div
+      className={`${
+        dancingScript.className
+      } min-h-screen flex flex-col overflow-hidden relative items-center justify-center p-8 md:p-12 transition-colors duration-300 ${
+        isOrangeTheme
+          ? "bg-gradient-to-r from-orange-200 via-orange-400 to-orange-600"
+          : "bg-gradient-to-br from-violet-300 via-pink-200 to-pink-100"
+      }`}
+      animate={{ opacity: [0, 1], transition: { duration: 0.5 } }}
+    >
+      <FallingSakura
+        speed={sakuraSpeed}
+        className="absolute"
+        totalPetals={25}
+      />
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        className="absolute top-6 right-6 bg-gray-100 text-gray-900 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-gray-200 transition-all duration-200"
+        onClick={handleThemeSwitch}
+        aria-label="Toggle Theme"
+      >
+        Toggle Theme
+      </motion.button>
+
+      <motion.div
+        initial={{ opacity: 0, translateY: 20 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        exit={{ opacity: 0, translateY: 20 }}
+        className="bg-white bg-opacity-95 rounded-3xl p-6 md:p-12 max-w-md md:max-w-xl w-full transform transition-all duration-500 flex flex-col items-center justify-center shadow-[0_2.8px_2.2px_rgba(0,_0,_0,_0.034),_0_6.7px_5.3px_rgba(0,_0,_0,_0.048),_0_12.5px_10px_rgba(0,_0,_0,_0.06),_0_22.3px_17.9px_rgba(0,_0,_0,_0.072),_0_41.8px_33.4px_rgba(0,_0,_0,_0.086),_0_100px_80px_rgba(0,_0,_0,_0.12)]"
+      >
+        <h1
+          className={`${quicksand.className} text-3xl md:text-4xl text-gray-900 mb-4 text-center`}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Discover the 3D Tilt
+        </h1>
+        <p className="text-gray-600 text-base md:text-lg text-center mb-8">
+          Experience the interactive 3D tilt effect by hovering over the card
+          below.
+        </p>
+
+        <Tilt
+          scale={1.1}
+          perspective={1000}
+          className={`${
+            isOrangeTheme
+              ? "bg-gradient-to-r from-orange-300 to-orange-500"
+              : "bg-gradient-to-br from-violet-300 to-pink-300"
+          } rounded-2xl p-4 md:p-8 relative flex flex-col items-center justify-between w-full max-w-[320px] md:max-h-[320px] transition-all duration-700 aspect-square shadow-[0_2.8px_2.2px_rgba(0,_0,_0,_0.034),_0_6.7px_5.3px_rgba(0,_0,_0,_0.048),_0_12.5px_10px_rgba(0,_0,_0,_0.06),_0_22.3px_17.9px_rgba(0,_0,_0,_0.072),_0_41.8px_33.4px_rgba(0,_0,_0,_0.086),_0_100px_80px_rgba(0,_0,_0,_0.12)]`}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <div
+            className="absolute w-full h-full z-[1]"
+            onMouseEnter={handleTiltHover}
+            onMouseLeave={handleTiltLeave}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={imageKey}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.5, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="flex flex-col items-center justify-center overflow-hidden rounded-full shadow-2xl grow pop-out-[30px]"
+            >
+              <Image
+                src={imageSrc}
+                alt="Tilt Image"
+                width={500}
+                height={500}
+                className="rounded-full border-[1px] h-full aspect-square w-full object-cover p-[1px] border-white"
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={imageKey}
+              initial={{ opacity: 0, translateY: 10, }}
+              animate={{ opacity: 1, translateY: 0 }}
+              exit={{ opacity: 0, translateY: 10 }}
+              transition={{ duration: 0.3 }}
+              className="text-white px-4 py-1 drop-shadow-md mt-2 h-[10px] pop-out-[60px]"
+            >
+              {textMessage}
+            </motion.p>
+          </AnimatePresence>
+        </Tilt>
+      </motion.div>
+
+      <footer className="absolute bottom-5 text-sm md:text-base text-center flex sm:gap-10 sm:flex-row flex-col">
+        <p>
+          Explore the project repository on &nbsp;
+          <FooterLink
+            href="https://github.com/original-repo"
+            text="GitHub"
+            isOrangeTheme={isOrangeTheme}
           />
-          Go to nextjs.org →
-        </a>
+          .
+        </p>
+        <p>
+          Original Repo &nbsp;
+          <FooterLink
+            href="https://github.com/original-repo"
+            text="GitHub"
+            isOrangeTheme={isOrangeTheme}
+          />
+          .
+        </p>
+        <p>
+          Thanks to&nbsp;
+          <FooterLink
+            href="https://codepen.io/rudtjd2548/pen/qBpVzxP"
+            text="Codepen"
+            isOrangeTheme={isOrangeTheme}
+          />
+          .
+        </p>
       </footer>
-    </div>
+    </motion.div>
   );
 }

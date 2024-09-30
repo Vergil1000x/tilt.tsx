@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Tilt Component
 
-## Getting Started
+A customizable React component that creates a 3D tilt effect on mouse movement, enhancing user interaction on your web applications. This component is perfect for adding depth and engaging visuals to any element.
 
-First, run the development server:
+## Features
+
+- **3D Tilt Effect**: Elements tilt based on mouse position.
+- **Customizable Parameters**: Easily adjust tilt angles, perspective, scale, transition speed, and easing functions.
+- **Selective Pop-Outs**: Define elements that pop out in 3D when hovered over.
+- **Axis Control**: Disable tilting along the X or Y axis.
+- **Lightweight**: Minimal overhead for a rich user experience.
+
+## Installation
+
+You can install the component via npm or yarn:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install your-package-name
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn add your-package-name
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
 
-## Learn More
+Here's a basic example of how to use the Tilt component:
 
-To learn more about Next.js, take a look at the following resources:
+```jsx
+import React from "react";
+import Tilt from "your-package-name";
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+const App = () => {
+  return (
+    <Tilt
+      maxTilt={30}
+      perspective={1000}
+      scale={1.1}
+      speed={500}
+      easing="cubic-bezier(.03,.98,.52,.99)"
+      className="tilt-effect"
+      popOutSelector=".pop-out"
+    >
+      <div className="pop-out-[20px]">Hover over me!</div>
+      <div>I'm just a regular child.</div>
+    </Tilt>
+  );
+};
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+export default App;
+```
 
-## Deploy on Vercel
+## Props
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Prop             | Type              | Default                         | Description                                         |
+| ---------------- | ----------------- | ------------------------------- | --------------------------------------------------- | ----------------------------------- |
+| `maxTilt`        | `number`          | `20`                            | Maximum tilt angle in degrees.                      |
+| `perspective`    | `number`          | `1000`                          | Perspective distance in pixels.                     |
+| `easing`         | `string`          | `cubic-bezier(.03,.98,.52,.99)` | Easing function for transitions.                    |
+| `scale`          | `number`          | `1`                             | Scale factor for the element.                       |
+| `speed`          | `number`          | `1000`                          | Transition speed in milliseconds.                   |
+| `disableAxis`    | `"x"              | "y"                             | null`                                               | Disable tilting on the X or Y axis. |
+| `className`      | `string`          | -                               | Custom CSS class for the tilt component.            |
+| `children`       | `React.ReactNode` | -                               | Child elements to be rendered inside the component. |
+| `popOutSelector` | `string`          | `".pop-out"`                    | Selector for child elements that should pop out.    |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Events
+
+The component responds to the following mouse events:
+
+- `mousemove`: Triggers tilt effect based on mouse position.
+- `mouseenter`: Starts the tilt effect on mouse enter.
+- `mouseleave`: Resets the tilt effect on mouse leave.
+
+## Example with Pop-Out Elements
+
+To create pop-out effects, you can use class names that follow the pattern `pop-out-[Xpx]` for elements you want to pop out:
+
+```jsx
+<div className="pop-out-[30px]">I'm popping out!</div>
+```
+
+## Custom Styling
+
+You can add your custom styles for the tilt effect and pop-out elements as needed.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Feel free to submit issues or pull requests to improve this component!
+
+## Contact
+
+For questions or suggestions, please open an issue in the GitHub repository or reach out via email.
