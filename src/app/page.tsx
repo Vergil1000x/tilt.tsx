@@ -156,7 +156,7 @@ export default function Home() {
         <p>
           Explore the project repository on &nbsp;
           <FooterLink
-            href="https://github.com/original-repo"
+            href="https://github.com/Vergil1000x/tilt.tsx"
             text="GitHub"
             isOrangeTheme={isOrangeTheme}
           />
@@ -165,7 +165,7 @@ export default function Home() {
         <p>
           Original Repo &nbsp;
           <FooterLink
-            href="https://github.com/original-repo"
+            href="https://github.com/gijsroge/tilt.js"
             text="GitHub"
             isOrangeTheme={isOrangeTheme}
           />
